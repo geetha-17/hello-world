@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'geetha-17/hello-world-python'
+        IMAGE_NAME = 'geetha8500/hello-world-python'
         DOCKER_CREDENTIALS_ID = '45e3064a-7b6c-4fe3-a314-15fded797ec4'  // Make sure this ID matches your Jenkins credentials
     }
 
