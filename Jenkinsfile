@@ -5,7 +5,8 @@ pipeline {
         IMAGE_NAME = 'geetha8500/hello-world-python'
     }
 
-    stage('Clone Repository') {
+    stages {
+        stage('Clone Repository') {
     steps {
         withCredentials([usernamePassword(credentialsId: 'ee8e722c-b38f-4b4c-90b9-fd32ccde08a1', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
             sh '''
@@ -16,6 +17,7 @@ pipeline {
             '''
         }
     }
+}
 
 
         stage('Build Docker Image') {
