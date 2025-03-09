@@ -12,7 +12,7 @@ pipeline {
                 if [ -d "hello-world-python" ]; then
                     rm -rf hello-world-python
                 fi
-                git clone https://$GIT_USER:$GIT_PASSWORD@github.com/geetha-17/hello-world-python.git
+                git clone https://$GIT_USER:$GIT_PASSWORD@github.com/geetha-17/hello-world.git
             '''
         }
     }
