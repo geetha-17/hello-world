@@ -30,7 +30,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${HARBOR_CREDENTIALS_ID}", usernameVariable: 'HARBOR_USER', passwordVariable: 'HARBOR_PASS')]) {
                     script {
-                        sh 'echo $HARBOR_PASS | docker login -u $HARBOR_USER --password-stdin 54.162.129.163'  // Replace with your Harbor URL
+                        sh 'echo $HARBOR_PASS | docker login -u $HARBOR_USER --password-stdin http://54.162.129.163'  // Replace with your Harbor URL
                     }
                 }
             }
