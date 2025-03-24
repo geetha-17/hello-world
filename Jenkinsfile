@@ -1,56 +1,40 @@
 pipeline {
-    agent any
-
-    environment {
-        // Update IMAGE_NAME to point to your Harbor registry
-        IMAGE_NAME = '54.162.129.163/myproject/hello-world'// Replace with your Harbor URL and project
-        HARBOR_CREDENTIALS_ID = 'harbor-credentials'  // Replace with your Jenkins credential ID for Harbor
-    }
-
+    agent none  // No default agent; specify per stage
     stages {
         stage('Clone Repository') {
+            agent { label 'any' }  // Can run on any agent (Jenkins master is fine)
             steps {
                 script {
-                    // Remove existing directory to prevent conflicts
-                    sh 'rm -rf hello-world || true'
-                    sh 'git clone https://geetha-17:${GIT_PASSWORD}@github.com/geetha-17/hello-world.git'
+                    sh 'rm -rf hello-world'
+                    sh 'git clone https://github.com/geetha-17/hello-world.git'
                 }
             }
         }
-
         stage('Build Docker Image') {
+            agent { label 'docker' }  // Run on the Docker agent
             steps {
                 script {
-                    sh 'docker build -t $IMAGE_NAME:latest hello-world'
+                    sh 'docker build -t 54.162.129.163/myproject/hello-world:latest hello-world'
                 }
             }
         }
-
         stage('Login to Harbor Registry') {
+            agent { label 'docker' }  // Run on the Docker agent
             steps {
-                withCredentials([usernamePassword(credentialsId: "${HARBOR_CREDENTIALS_ID}", usernameVariable: 'HARBOR_USER', passwordVariable: 'HARBOR_PASS')]) {
-                    script {
-                        sh 'echo $HARBOR_PASS | docker login -u $HARBOR_USER --password-stdin http://54.162.129.163'  // Replace with your Harbor URL
-                    }
-                }
+                // Add your Harbor login commands here, e.g.:
+                sh 'docker login 54.162.129.163 -u admin -p Harbor12345'
             }
         }
-
         stage('Push Docker Image') {
+            agent { label 'docker' }  // Run on the Docker agent
             steps {
-                script {
-                    sh 'docker push $IMAGE_NAME:latest'
-                }
+                sh 'docker push 54.162.129.163/myproject/hello-world:latest'
             }
         }
     }
-
     post {
         failure {
             echo 'Build Failed!'
-        }
-        success {
-            echo 'Build and Push to Harbor Successful!'
         }
     }
 }
