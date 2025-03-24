@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Update IMAGE_NAME to point to your Harbor registry
-        IMAGE_NAME = '54.162.129.163/myproject/hello-world-python'  // Replace with your Harbor URL and project
+        IMAGE_NAME = '54.162.129.163/myproject/hello-world// Replace with your Harbor URL and project
         HARBOR_CREDENTIALS_ID = 'harbor-credentials'  // Replace with your Jenkins credential ID for Harbor
     }
 
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Remove existing directory to prevent conflicts
-                    sh 'rm -rf hello-world-python || true'
+                    sh 'rm -rf hello-world || true'
                     sh 'git clone https://geetha-17:${GIT_PASSWORD}@github.com/geetha-17/hello-world.git'
                 }
             }
@@ -21,7 +21,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t $IMAGE_NAME:latest hello-world-python'
+                    sh 'docker build -t $IMAGE_NAME:latest hello-world'
                 }
             }
         }
