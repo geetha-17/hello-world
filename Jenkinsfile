@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'geetha8500/hello-world-python'
-        DOCKER_CREDENTIALS_ID = '45e3064a-7b6c-4fe3-a314-15fded797ec4'  // Make sure this ID matches your Jenkins credentials
+        // Update IMAGE_NAME to point to your Harbor registry
+        IMAGE_NAME = '54.162.129.163/myproject/hello-world-python'  // Replace with your Harbor URL and project
+        HARBOR_CREDENTIALS_ID = 'harbor-credentials'  // Replace with your Jenkins credential ID for Harbor
     }
 
     stages {
@@ -25,11 +26,11 @@ pipeline {
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Login to Harbor Registry') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '45e3064a-7b6c-4fe3-a314-15fded797ec4', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: "${HARBOR_CREDENTIALS_ID}", usernameVariable: 'HARBOR_USER', passwordVariable: 'HARBOR_PASS')]) {
                     script {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        sh 'echo $HARBOR_PASS | docker login -u $HARBOR_USER --password-stdin 54.162.129.163'  // Replace with your Harbor URL
                     }
                 }
             }
@@ -49,7 +50,7 @@ pipeline {
             echo 'Build Failed!'
         }
         success {
-            echo 'Build and Push Successful!'
+            echo 'Build and Push to Harbor Successful!'
         }
     }
 }
