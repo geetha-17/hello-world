@@ -2,7 +2,7 @@ pipeline {
     agent none  // No default agent; specify per stage
     stages {
         stage('Clone Repository') {
-            agent { label 'any' }  // Can run on any agent (Jenkins master is fine)
+            agent { label 'docker' }  // Can run on any agent (Jenkins master is fine)
             steps {
                 script {
                     sh 'rm -rf hello-world'
