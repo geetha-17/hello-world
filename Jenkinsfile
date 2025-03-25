@@ -25,7 +25,7 @@ pipeline {
 
         stage('Login to Harbor') {
             steps {
-                sh "docker login ${HARBOR_URL} -u ${HARBOR_USER} -p ${HARBOR_PASSWORD}"
+                sh 'docker login 46.30.14.91 -u admin -p Harbor12345'
             }
         }
 
