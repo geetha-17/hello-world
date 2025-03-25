@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "myapp"
+        DOCKER_IMAGE = "hello-world"
         DOCKER_TAG = "latest"
-        HARBOR_URL = "http://<AWS_INSTANCE_IP>"
+        HARBOR_URL = "http://3.94.133.43"
         HARBOR_PROJECT = "library"
         HARBOR_USER = "admin"
         HARBOR_PASSWORD = "Harbor12345"
