@@ -1,40 +1,38 @@
 pipeline {
-    agent none  // No default agent; specify per stage
-    stages {
-        stage('Clone Repository') {
-            agent { label 'docker' }  // Can run on any agent (Jenkins master is fine)
-            steps {
-                script {
-                    sh 'rm -rf hello-world'
-                    sh 'git clone https://github.com/geetha-17/hello-world.git'
-                }
-            }
-        }
-        stage('Build Docker Image') {
-            agent { label 'docker' }  // Run on the Docker agent
-            steps {
-                script {
-                    sh 'docker build -t 54.162.129.163/myproject/hello-world:latest hello-world'
-                }
-            }
-        }
-        stage('Login to Harbor Registry') {
-            agent { label 'docker' }  // Run on the Docker agent
-            steps {
-                // Add your Harbor login commands here, e.g.:
-                sh 'docker login 54.162.129.163 -u admin -p Harbor12345'
-            }
-        }
-        stage('Push Docker Image') {
-            agent { label 'docker' }  // Run on the Docker agent
-            steps {
-                sh 'docker push 54.162.129.163/myproject/hello-world:latest'
-            }
-        }
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "myapp"
+        DOCKER_TAG = "latest"
+        HARBOR_URL = "http://<AWS_INSTANCE_IP>"
+        HARBOR_PROJECT = "library"
+        HARBOR_USER = "admin"
+        HARBOR_PASSWORD = "Harbor12345"
     }
-    post {
-        failure {
-            echo 'Build Failed!'
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/geetha-17/hello-world.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${HARBOR_URL}/${HARBOR_PROJECT}/${DOCKER_IMAGE}:${DOCKER_TAG} ."
+            }
+        }
+
+        stage('Login to Harbor') {
+            steps {
+                sh "docker login ${HARBOR_URL} -u ${HARBOR_USER} -p ${HARBOR_PASSWORD}"
+            }
+        }
+
+        stage('Push Image to Harbor') {
+            steps {
+                sh "docker push ${HARBOR_URL}/${HARBOR_PROJECT}/${DOCKER_IMAGE}:${DOCKER_TAG}"
+            }
         }
     }
 }
