@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/geetha-17/hello-world.git'
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/geetha-17/hello-world.git'
             }
         }
 
