@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "hello-world"
         DOCKER_TAG = "latest"
-        HARBOR_URL = "http://3.94.133.43"
-        HARBOR_PROJECT = "library"
+        HARBOR_URL = "http://46.30.14.91"
+        HARBOR_PROJECT = "myproject"
         HARBOR_USER = "admin"
         HARBOR_PASSWORD = "Harbor12345"
     }
